@@ -1,0 +1,48 @@
+{
+    "name": "hbbtv-lib",
+    "version": "0.0.1",
+    "description": "Library for common functionality needed in HbbTV applications.",
+    "keywords": [
+        "HbbTV",
+        "companion screen",
+        "sync manager",
+        "application manager"
+    ],
+    "main": "dist/main/appman.js",
+    "scripts": {
+        "postinstall": "grunt copy_src_dirs_to_root",
+        "test": "grunt test",
+        "prepare": "grunt build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@gitlab-ext.irt.de:2-immerse/hbbtv-lib.git"
+    },
+    "author": {
+        "name": "Michael Probst",
+        "email": "michael.probst@irt.de",
+        "url": "http://www.irt.de"
+    },
+    "files": [
+        "src/**/*.js",
+        "tests/**/*.js",
+        "AUTHORS",
+        "package.json",
+        "Gruntfile.js",
+        "README.md",
+        "dist"
+    ],
+    "license": "Apache-2.0",
+    "dependencies": {
+        "events": "^1.1.1"
+    },
+    "devDependencies": {
+        "grunt": "^1.0.1",
+        "grunt-contrib-clean": "^2.0.0",
+        "grunt-contrib-copy": "^1.0.0",
+        "grunt-contrib-jasmine": "^1.1.0",
+        "grunt-jsdoc": "^2.1.0",
+        "grunt-webpack": "^3.0.2",
+        "webpack": "^3.10.0"
+    }
+}

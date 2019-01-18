@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: cs/cs_manager.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: cs/cs_manager.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright: IRT 2019
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var Emitter = require('events').EventEmitter;
+var inherit = require('../tools/inherit');
+var instance = null;
+
+/**
+ * Instances of this class provide details of endpoints of a Terminal that has
+ * been discovered using the discoverTerminals()
+ * 
+ * @typedef {object} DiscoveredCSLauncher
+ * @property {number} enum_id The unique ID of an instance of a CS Launcher application.
+ * @property {number} friendly_name A CS Launcher application may provide a friendly name.
+ * @property {number} CS_OS_id The CS OS identifier string, as described in clause 14.4.1. of the HbbTV 2 specification
+ */
+
+
+/**
+ * An error occured. 
+ * 
+ * &lt;p>Use the [CSMan.EVT_CS_ERROR]{@link CSMan#EVT_CS_ERROR} event name constant
+ * to listen for this event.
+ * 
+ * @event CSMan#EVT_CS_ERROR
+ * @param {string} errorCode Error code. Following values possible:
+ *  &lt;ul>
+ *      &lt;li>[ERR_UNDEFINED]{@link CSMan#ERR_UNDEFINED}
+ *      &lt;li>[ERR_CSMAN_NOTFOUND]{@link CSMan#ERR_CSMAN_NOTFOUND}
+ *      &lt;li>[ERR_INVALID_ENUM_ID]{@link CSMan#ERR_INVALID_ENUM_ID}
+ *      &lt;li>[ERR_CSMAN_TIMEOUT]{@link CSMan#ERR_CSMAN_TIMEOUT}
+ *  &lt;/ul>
+ * @param {string} message A textual description of what happened
+ */
+
+/**
+ * A companion screen has been discovered or the discovery timed out.
+ * 
+ * &lt;p>Use the [CSMan.EVT_CS_DISCOVERED]{@link CSMan#EVT_CS_DISCOVERED} event name constant
+ * to listen for this event.
+ * 
+ * @event CSMan#EVT_CS_DISCOVERED
+ * @param {Array&lt;DiscoveredCSLauncher>} csLaunchers Array of discovered CS launchers.
+ */
+
+/**
+ * Response of a launch or install request is available.
+ * 
+ * @event CSMan#EVT_CS_LAUNCH_RESPONSE
+ * @param {number} responseCode Can have the following values:
+ *  &lt;ul>
+ *      &lt;li>[OP_REJECTED]{@link CSMan#OP_REJECTED}
+ *      &lt;li>[OP_DENIED]{@link CSMan#OP_DENIED}
+ *      &lt;li>[INVALID_ID]{@link CSMan#INVALID_ID}
+ *      &lt;li>[GENERAL_ERROR]{@link CSMan#GENERAL_ERROR}
+ *      &lt;li>[OP_FAILED]{@link CSMan#OP_FAILED}
+ *      &lt;li>[APP_ALREADY_INSTALLED]{@link CSMan#APP_ALREADY_INSTALLED}
+ *  &lt;/ul>
+ */
+
+
+/**
+ * @exports CSMan
+ * @class CSMan
+ * @hideconstructor
+ * 
+ * @classdesc Module for using the Companion Screen Manager API of HbbTV 2.0
+ * 
+ * &lt;p>CSMan may fire the following events:
+ * &lt;ul>
+ *   &lt;li>[EVT_CS_ERROR]{@link CSMan#event:EVT_CS_ERROR}&lt;/li>
+ *   &lt;li>[EVT_CS_DISCOVERED]{@link CSMan#event:EVT_CS_DISCOVERED}&lt;/li>
+ *   &lt;li>[EVT_CS_LAUNCH_RESPONSE]{@link CSMan#event:EVT_CS_LAUNCH_RESPONSE}&lt;/li>
+ * &lt;/ul>
+ * 
+ * @example &lt;caption>Launch a webpage with the remote app2app service endpoint added to the URL.&lt;/caption>
+ * var CSMan = require("hbbtv-lib/cs/cs_manager");
+ * 
+ * CSMan.once(CSMan.CS_DISCOVERED, on_discovery_finished);
+ * CSMan.discover_launchers(10000);
+ * 
+ * function on_discovery_finished (devices) {
+ * 	   for (x in devices) {
+ * 	       CSMan.launch_html(devices[x].enum_id, "http://example.com/");
+ * 	   }
+ * }
+ * 
+ * @augments external:EventEmitter
+ */
+function CSMan () {
+    try {
+        this.cs_man  = oipfObjectFactory.createCSManager();
+        if (!this.cs_man || typeof this.cs_man.discoverCSLaunchers != "function") {
+            this.cs_man = null;
+        }
+    } catch (e) {
+    }
+}
+
+inherit(CSMan, Emitter);
+
+/**
+ * Get the current base URL of the local endpoint of the application to application
+ * communication service.
+ * 
+ * &lt;p>The endpoint is defined in clause 14.5.2 of the
+ * [HbbTV 2 specification]{@link https://www.hbbtv.org/wp-content/uploads/2018/02/HbbTV_v202_specification_2018_02_16.pdf}.
+ * The usage of this endpoint to communicate between the HbbTV® application and the
+ * remote client is described in clause 14.5.1. The URL retrieved by this method shall
+ * end with a slash ('/') character.
+ * 
+ * @returns {string} the local app2app service endpoint.
+ */
+CSMan.prototype.getA2A_local = function () {
+    try {
+        return this.cs_man.getApp2AppLocalBaseURL();
+    } catch (e) {}
+    return null;
+};
+
+
+/**
+ * Get the current base URL of the remote endpoint of the application to application service.
+ * 
+ * &lt;p>The URL retrieved by this method shall be the same as the URL carried
+ * in the &lt;X_HbbTV_App2AppURL> element as described in clause 14.7.2 of the
+ * [HbbTV 2 specification]{@link https://www.hbbtv.org/wp-content/uploads/2018/02/HbbTV_v202_specification_2018_02_16.pdf}
+ * and shall end with a slash ('/') character.
+ * 
+ * @returns {string} the remote app2app service endpoint, i.e. the one used by the companion application
+ */
+CSMan.prototype.getA2A_remote = function () {
+    try {
+        return this.cs_man.getApp2AppRemoteBaseURL();
+    } catch (e) {}
+    return null;
+}
+
+/**
+ * Get the URL that points to the CSS-CII service endpoint of the terminal that the calling
+ * HbbTV application is running on.
+ * 
+ * &lt;p>The URL retrieved by this method shall be the same as the URL carried in the
+ * &lt;X_HbbTV_InterDevSyncURL> element as described in clause 14.7.2. of the
+ * [HbbTV 2 specification]{@link https://www.hbbtv.org/wp-content/uploads/2018/02/HbbTV_v202_specification_2018_02_16.pdf}
+ * 
+ * @returns {string} the DVB CSS CII service endpoint.
+ */
+CSMan.prototype.getCII = function () {
+    try {
+        return this.cs_man.getInterDevSyncURL ();
+    } catch (e) {}
+    return null;
+}
+
+/**
+ * Discovers available CS launchers.
+ * 
+ * @param {number} [timeout=1500] Specifies when discovery shall terminate.
+ *
+ * @fires CSMan#EVT_CS_DISCOVERED
+ * @fires CSMan#EVT_CS_ERROR
+ */
+CSMan.prototype.discover_launchers = function (timeout) {
+    var _timeout = timeout || 1500;
+    var timer = null;
+    var that  = this;
+    if (this.cs_man &amp;&amp; this.cs_man.discoverCSLaunchers(function (arr) {
+        if (timer) {
+            clearTimeout(timer);
+            timer = null;
+            that.emit(that.EVT_CS_DISCOVERED, arr);
+        } else {
+            that.emit(that.EVT_CS_ERROR, that.ERR_UNDEFINED, "CS Manager: onCSDiscovery called after time out.");
+        }
+    })) {
+        timer = setTimeout (
+            function () {
+                timer = null;
+                that.emit(that.EVT_CS_ERROR, that.ERR_CSMAN_TIMEOUT, "CS Manager: discovery timed out.");
+            }, _timeout
+        );
+        return true;
+    } else {
+        this.emit(this.EVT_CS_ERROR, this.ERR_CSMAN_NOTFOUND, "CSManager not available.");
+        return false;
+    }
+}
+
+/**
+ * Send launch and install requests.
+ * 
+ * @param {number} enum_id Identifier (enum_id) of a [DiscoveredCSLauncher]{@link DiscoveredCSLauncher}
+ * @param {string} payload Information on the app to be launched.
+ * 
+ * @returns {boolean} TRUE if request was executed, else FALSE.
+ * 
+ * @fires CSMan#EVT_CS_LAUNCH_RESPONSE
+ * @fires CSMan#EVT_CS_ERROR
+ * 
+ * @see Section 14.4.2. of the [HbbTV 2 specification]{@link https://www.hbbtv.org/wp-content/uploads/2018/02/HbbTV_v202_specification_2018_02_16.pdf}
+ *   for the definition of the payload format.
+ */
+CSMan.prototype.send_request = function (enum_id, request) {
+    var that = this;
+    if (this.cs_man.launchCSApp(enum_id, request,
+        function (enum_id, error_code) {
+            that.emit(that.EVT_CS_LAUNCH_RESPONSE, enum_id, error_code);
+        }
+    )) {
+        return true;
+    }
+    this.emit(this.EVT_CS_ERROR, this.ERR_INVALID_ENUM_ID, enum_id, "CSManager: launch failed, enum_id not valid: " + enum_id);
+    return false;
+}
+
+CSMan.prototype.to_launch_struct = function (url, type) {
+    return {"launchUrl": url, "appType": type};
+}
+
+/**
+ * Launches an HTML page on the selected device.
+ *
+ * @param {number} enum_id Identifier (enum_id) of a [DiscoveredCSLauncher]{@link DiscoveredCSLauncher}
+ * @param {string} url a URL to a web site that shall be launched.
+ * 
+ * @returns {boolean} TRUE if request was executed, else FALSE.
+ *
+ * @fires CSMan#EVT_CS_LAUNCH_RESPONSE
+ * @fires CSMan#EVT_CS_ERROR
+ */
+CSMan.prototype.launch_html = function (enum_id, url) {
+    if (!this.cs_man) {
+        this.emit(this.CS_ERROR, this.ERR_CSMAN_NOTFOUND, "CSManager not available.");
+        return false;
+    }
+    return this.send_request(enum_id, JSON.stringify(
+        {
+            "launch": [this.to_launch_struct(url, "html")]
+        }
+    ));
+}
+
+/**
+ * Launches a native application on the selected device.
+ * 
+ * @param {number} enum_id Identifier (enum_id) of a [DiscoveredCSLauncher]{@link DiscoveredCSLauncher}
+ * @param {string} url a URL that is connected with a native application, that is installed on the companion device.
+ * 
+ * @returns {boolean} TRUE if request was executed, else FALSE.
+ * 
+ * @fires CSMan#EVT_CS_LAUNCH_RESPONSE
+ * @fires CSMan#EVT_CS_ERROR
+ */
+CSMan.prototype.launch_native = function (enum_id, url) {
+    if (!this.cs_man) {
+        this.emit(this.CS_ERROR, this.ERR_CSMAN_NOTFOUND, "CSManager not available.");
+        return false;
+    }
+    return this.send_request(enum_id, JSON.stringify(
+        {
+            "launch": [this.to_launch_struct(url, "native")]
+        }
+    ));
+}
+
+/**
+ * Launches a native application with an HTML page as fallback on the selected device.
+ * 
+ * @param {number} enum_id Identifier (enum_id) of a [DiscoveredCSLauncher]{@link DiscoveredCSLauncher}
+ * @param {string} url_native a URL that is connected with a native application, that is installed on the companion device.
+ * @param {string} url_html a URL to a web site that shall be launched if the native application can't be launched.
+ * 
+ * @returns {boolean} TRUE if request was executed, else FALSE.
+ * 
+ * @fires CSMan#EVT_CS_LAUNCH_RESPONSE
+ * @fires CSMan#EVT_CS_ERROR
+ */
+CSMan.prototype.launch_native_html = function (enum_id, url_native, url_html) {
+    if (!this.cs_man) {
+        this.emit(this.CS_ERROR, this.ERR_CSMAN_NOTFOUND, "CSManager not available.");
+        return false;
+    }
+    return this.send_request(enum_id, JSON.stringify(
+        {
+            "launch": [
+                this.to_launch_struct(url_native, "native"),
+                this.to_launch_struct(url_html, "html")
+            ]
+        }
+    ));
+}
+
+
+/**
+ * Issues an install request on the selected device.
+ * 
+ * @param {number} enum_id Identifier (enum_id) of a [DiscoveredCSLauncher]{@link DiscoveredCSLauncher}
+ * @param {string} app_url market specific identifier of an application
+ * @param {string} market_id id of a supported market on the companion device, e.g. Play Store, etc.
+ *  
+ * 
+ * @returns {boolean} TRUE if request was executed, else FALSE.
+ * 
+ * @fires CSMan#EVT_CS_LAUNCH_RESPONSE
+ * @fires CSMan#EVT_CS_ERROR
+ */
+CSMan.prototype.install = function (enum_id, app_url, market_id) {
+    if (!this.cs_man) {
+        this.emit(this.CS_ERROR, this.ERR_CSMAN_NOTFOUND, "CSManager not available.");
+        return false;
+    }
+    return this.send_request(enum_id, JSON.stringify(
+        {
+            "install": [
+                {
+                    "installUrl" : app_url,
+                    "appStoreId" : market_id
+                }
+            ]
+        }
+    ));
+}
+
+
+
+/**
+ * Event name constant for the [EVT_CS_ERROR]{@link CSMan#event:EVT_CS_ERROR} event.
+ */
+CSMan.prototype.EVT_CS_ERROR = "error";
+CSMan.prototype.CS_ERROR = CSMan.prototype.EVT_CS_ERROR; // Backward compatibility
+
+/**
+ * Event name constant for the [EVT_CS_DISCOVERED]{@link CSMan#event:EVT_CS_DISCOVERED} event.
+ */
+CSMan.prototype.EVT_CS_DISCOVERED = "cs_discovered";
+CSMan.prototype.CS_DISCOVERED = CSMan.prototype.EVT_CS_DISCOVERED; // Backward compatibility
+
+/**
+ * Event name constant for the [EVT_CS_LAUNCH_RESPONSE]{@link CSMan#event:EVT_CS_LAUNCH_RESPONSE} event.
+ */
+CSMan.prototype.EVT_CS_LAUNCH_RESPONSE = "cs_launch_resp";
+CSMan.prototype.CS_LAUNCH_RESPONSE = CSMan.prototype.EVT_CS_LAUNCH_RESPONSE;
+
+/**
+ * Unspecified error.
+ */
+CSMan.prototype.ERR_UNDEFINED = 0;
+/**
+ * HbbTV CS Manager could not be initialized.
+ */
+CSMan.prototype.ERR_CSMAN_NOTFOUND = 1;
+/**
+ * Error signalled if the enum_id in a launch or install request does not match a connected CS launcher.
+ */
+CSMan.prototype.ERR_INVALID_ENUM_ID = 2;
+/**
+ * The discovery for launcher apps timed out. HbbTV requires that the discovery is finished within a second.
+ * @see CSMan.discover_launchers()
+ */
+CSMan.prototype.ERR_CSMAN_TIMEOUT = 3;
+
+//  Error codes fuer launch_and_install
+
+/**
+ * The CS Launcher application has automatically rejected
+ * the operation with no interaction with the user of the
+ * Companion Screen.
+ * This error code is intended for use when the CS Launcher
+ * has automatically blocked the operation due to a blacklist
+ * feature.
+ */
+CSMan.prototype.OP_REJECTED = 0;
+/**
+ * The CS Launcher application has blocked the operation,
+ * but it was blocked by the explicit interaction of the user of
+ * the Companion Screen.
+ */
+CSMan.prototype.OP_DENIED = 1;
+/**
+ * The CS Launcher application has initiated the instruction
+ * (launch or install) without a problem. It is assumed (to the
+ * best knowledge of the Launcher application) that the
+ * launch or installation operation has completed
+ * successfully.
+ */
+CSMan.prototype.OP_NOT_GUARANTEED = 2;
+/**
+ * The CS Launcher application that is identified by enum_id
+ * is no longer available. (i.e. it has become unavailable
+ * since discovery occurred), or has never been available.
+ */
+CSMan.prototype.INVALID_ID = 3;
+/**
+ * A general error has occurred that meant that the operation
+ * could not be completed for a reason other than those
+ * described for the other error codes in this table.
+ */
+CSMan.prototype.GENERAL_ERROR = 4;
+/**
+ * The CS Launcher application attempted a Launch or
+ * Install operation but it is known to have failed. For a Native
+ * application, it means that the application could not be
+ * launched or installed. For an HTML application it means
+ * that an HTML application environment could not be
+ * launched.
+ */
+CSMan.prototype.OP_FAILED = 5;
+/**
+ * The CS Launcher application received an Install operation
+ * (without a Launch operation) but it detected that the
+ * requested application is already installed 
+ */
+CSMan.prototype.APP_ALREADY_INSTALLED = 6;
+
+module.exports = {
+    getInstance : function () {
+        if (instance === null) {
+            instance = new CSMan();
+        }
+        return instance;
+    }
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-HbbTVUserAgentParser.html">HbbTVUserAgentParser</a></li></ul><h3>Externals</h3><ul><li><a href="external-EventEmitter.html">EventEmitter</a></li></ul><h3>Classes</h3><ul><li><a href="AppMan.html">AppMan</a></li><li><a href="CSMan.html">CSMan</a></li><li><a href="SyncManager.html">SyncManager</a></li></ul><h3>Events</h3><ul><li><a href="CSMan.html#event:EVT_CS_DISCOVERED">EVT_CS_DISCOVERED</a></li><li><a href="CSMan.html#event:EVT_CS_ERROR">EVT_CS_ERROR</a></li><li><a href="CSMan.html#event:EVT_CS_LAUNCH_RESPONSE">EVT_CS_LAUNCH_RESPONSE</a></li><li><a href="SyncManager.html#event:EVT_CII_DISABLED">EVT_CII_DISABLED</a></li><li><a href="SyncManager.html#event:EVT_CII_ENABLED">EVT_CII_ENABLED</a></li><li><a href="SyncManager.html#event:EVT_ERROR">EVT_ERROR</a></li><li><a href="SyncManager.html#event:EVT_MS_ERROR">EVT_MS_ERROR</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Jan 18 2019 10:00:49 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

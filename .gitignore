@@ -1,0 +1,8 @@
+node_modules/
+doc/
+.grunt/
+build/
+dist/
+/cs/
+/main/
+/tools/

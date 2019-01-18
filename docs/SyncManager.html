@@ -1,0 +1,1891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: SyncManager</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Class: SyncManager</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>SyncManager<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description">Simplifies the use of the Media Synchroniser Object API of HbbTV 2.0
+
+<p>SyncManager may fire the following events:
+<ul>
+  <li><a href="SyncManager.html#event:EVT_CII_DISABLED">EVT_CII_DISABLED</a></li>
+  <li><a href="SyncManager.html#event:EVT_CII_ENABLED">EVT_CII_ENABLED</a></li>
+  <li><a href="SyncManager.html#event:EVT_ERROR">EVT_ERROR</a></li>
+  <li><a href="SyncManager.html#event:EVT_MS_ERROR">EVT_MS_ERROR</a></li>
+</ul></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+    <h2>Constructor</h2>
+    
+
+    
+    <h4 class="name" id="SyncManager"><span class="type-signature"></span>new SyncManager<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cs_sync_manager.js.html">cs/sync_manager.js</a>, <a href="cs_sync_manager.js.html#line49">line 49</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+        <p class="code-caption">Enable inter-device synchronisation with video/broadcast</p>
+    
+    <pre class="prettyprint"><code>var SyncManager  = require('hbbtv-lib/cs/sync_manager');
+
+mediaObj = document.getElementById("vbObject");
+mediaObj.bindToCurrentChannel();
+
+// wait for presenting state
+syncMan = new SyncManager();
+
+syncMan.on(SyncManager.EVT_MS_ERROR, on_ms_error);
+syncMan.once(SyncManager.EVT_CII_ENABLED, on_cii_enabled);
+syncMan.once(SyncManager.EVT_CII_DISABLED, on_cii_disabled);
+
+syncMan.setMasterMedia(mediaObj, "urn:dvb:css:timeline:temi:1:1");
+syncMan.enableCII();
+
+function on_cii_enabled() {
+    log("synchronisation with companion can be started.");
+}</code></pre>
+
+
+
+    
+    </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li><a href="external-EventEmitter.html">external:EventEmitter</a></li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=".EVT_CII_DISABLED"><span class="type-signature">(static) </span>EVT_CII_DISABLED<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Event name constant for the <a href="SyncManager.html#event:EVT_CII_DISABLED">EVT_CII_DISABLED</a> event.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cs_sync_manager.js.html">cs/sync_manager.js</a>, <a href="cs_sync_manager.js.html#line531">line 531</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".EVT_CII_ENABLED"><span class="type-signature">(static) </span>EVT_CII_ENABLED<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Event name constant for the <a href="SyncManager.html#event:EVT_CII_ENABLED">EVT_CII_ENABLED</a> event.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cs_sync_manager.js.html">cs/sync_manager.js</a>, <a href="cs_sync_manager.js.html#line536">line 536</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".EVT_ERROR"><span class="type-signature">(static) </span>EVT_ERROR<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Event name constant for the <a href="SyncManager.html#event:EVT_ERROR">EVT_ERROR</a> event.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cs_sync_manager.js.html">cs/sync_manager.js</a>, <a href="cs_sync_manager.js.html#line541">line 541</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".EVT_MS_ERROR"><span class="type-signature">(static) </span>EVT_MS_ERROR<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Event name constant for the <a href="SyncManager.html#event:EVT_MS_ERROR">EVT_MS_ERROR</a> event.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cs_sync_manager.js.html">cs/sync_manager.js</a>, <a href="cs_sync_manager.js.html#line546">line 546</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="addMediaObject"><span class="type-signature"></span>addMediaObject<span class="signature">(mediaObject, tl_spec, cor)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Adds the media object to the sync manager, i.e. by calling addMediaObject.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>mediaObject</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">either a A/V or V/B object, or an HTML5 media element in a suitable state for media synchronisation.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tl_spec</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">a synchronisation timeline specifier.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">an object providing a correlation tuple (support dvbcss_clocks from BBC and MRS formats)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cs_sync_manager.js.html">cs/sync_manager.js</a>, <a href="cs_sync_manager.js.html#line299">line 299</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<h5>Fires:</h5>
+<ul>
+    <li><a href="SyncManager.html#event:EVT_ERROR">SyncManager#event:EVT_ERROR</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    TRUE if method executed without errors, else FALSE.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="addMediaObject"><span class="type-signature"></span>addMediaObject<span class="signature">(obj)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Removes the media object from the sync manager, i.e. by calling removeMediaObject.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">video</span>
+|
+
+<span class="param-type">audio</span>
+|
+
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">either a A/V or V/B object, or an HTML5 media element in a suitable state for media synchronisation.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cs_sync_manager.js.html">cs/sync_manager.js</a>, <a href="cs_sync_manager.js.html#line347">line 347</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<h5>Fires:</h5>
+<ul>
+    <li><a href="SyncManager.html#event:EVT_ERROR">SyncManager#event:EVT_ERROR</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    TRUE if method executed without errors, else FALSE.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="currentTime"><span class="type-signature"></span>currentTime<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Returns current position on the media timeline
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cs_sync_manager.js.html">cs/sync_manager.js</a>, <a href="cs_sync_manager.js.html#line475">line 475</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Current time
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="disableCII"><span class="type-signature"></span>disableCII<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Disables inter-device synchronisation. Closes the terminals CII endpoints.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cs_sync_manager.js.html">cs/sync_manager.js</a>, <a href="cs_sync_manager.js.html#line462">line 462</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<h5>Fires:</h5>
+<ul>
+    <li><a href="SyncManager.html#event:EVT_CII_DISABLED">SyncManager#event:EVT_CII_DISABLED</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="enableCII"><span class="type-signature"></span>enableCII<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Enables inter-device synchronisation for MediaSynchroniser that is properly initialized.
+An event is fired when the service endpoints (e.g. DVB CII) are operational.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cs_sync_manager.js.html">cs/sync_manager.js</a>, <a href="cs_sync_manager.js.html#line442">line 442</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<h5>Fires:</h5>
+<ul>
+    <li><a href="SyncManager.html#event:EVT_CII_ENABLED">SyncManager#event:EVT_CII_ENABLED</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    true if the SyncManager is initialized properly.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setMasterMedia"><span class="type-signature"></span>setMasterMedia<span class="signature">(master, tl_spec)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Adds the master media to the sync manager, i.e. by calling initMediaSynchroniser. Note: this can be called only once.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>master</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">media_object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">either a A/V or V/B object, or an HTML5 media element in a suitable state for media synchronisation.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tl_spec</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">a synchronisation timeline specifier.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cs_sync_manager.js.html">cs/sync_manager.js</a>, <a href="cs_sync_manager.js.html#line250">line 250</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<h5>Fires:</h5>
+<ul>
+    <li><a href="SyncManager.html#event:EVT_ERROR">SyncManager#event:EVT_ERROR</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    TRUE if method executed without errors, else FALSE.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="stop"><span class="type-signature"></span>stop<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Stops any active MediaSynchroniser, i.e. disables inter-device sync (aka DVB CSS).
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cs_sync_manager.js.html">cs/sync_manager.js</a>, <a href="cs_sync_manager.js.html#line485">line 485</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+        <h3 class="subsection-title">Events</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="event:EVT_CII_DISABLED">EVT_CII_DISABLED</h4>
+    
+
+    
+
+
+
+<div class="description">
+    The CII endpoint of the HbbTV terminal has been disabled.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cs_sync_manager.js.html">cs/sync_manager.js</a>, <a href="cs_sync_manager.js.html#line25">line 25</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="event:EVT_CII_ENABLED">EVT_CII_ENABLED</h4>
+    
+
+    
+
+
+
+<div class="description">
+    The CII endpoint of the HbbTV terminal has been enabled.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cs_sync_manager.js.html">cs/sync_manager.js</a>, <a href="cs_sync_manager.js.html#line30">line 30</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="event:EVT_ERROR">EVT_ERROR</h4>
+    
+
+    
+
+
+
+<div class="description">
+    An error occured
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A textual description of what happened</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cs_sync_manager.js.html">cs/sync_manager.js</a>, <a href="cs_sync_manager.js.html#line35">line 35</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="event:EVT_MS_ERROR">EVT_MS_ERROR</h4>
+    
+
+    
+
+
+
+<div class="description">
+    An error occured
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A textual description of what happened</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cs_sync_manager.js.html">cs/sync_manager.js</a>, <a href="cs_sync_manager.js.html#line41">line 41</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-HbbTVUserAgentParser.html">HbbTVUserAgentParser</a></li></ul><h3>Externals</h3><ul><li><a href="external-EventEmitter.html">EventEmitter</a></li></ul><h3>Classes</h3><ul><li><a href="AppMan.html">AppMan</a></li><li><a href="CSMan.html">CSMan</a></li><li><a href="SyncManager.html">SyncManager</a></li></ul><h3>Events</h3><ul><li><a href="CSMan.html#event:EVT_CS_DISCOVERED">EVT_CS_DISCOVERED</a></li><li><a href="CSMan.html#event:EVT_CS_ERROR">EVT_CS_ERROR</a></li><li><a href="CSMan.html#event:EVT_CS_LAUNCH_RESPONSE">EVT_CS_LAUNCH_RESPONSE</a></li><li><a href="SyncManager.html#event:EVT_CII_DISABLED">EVT_CII_DISABLED</a></li><li><a href="SyncManager.html#event:EVT_CII_ENABLED">EVT_CII_ENABLED</a></li><li><a href="SyncManager.html#event:EVT_ERROR">EVT_ERROR</a></li><li><a href="SyncManager.html#event:EVT_MS_ERROR">EVT_MS_ERROR</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Jan 18 2019 10:00:49 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

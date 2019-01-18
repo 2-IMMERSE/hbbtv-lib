@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>A library for HbbTV-application developers</h1><p><a href="https://badge.fury.io/js/hbbtv-lib"><img src="https://badge.fury.io/js/hbbtv-lib.svg" alt="npm version"></a></p>
+<p><strong>hbbtv-lib</strong> is a collection of modules for common HbbTV functionality</p>
+<ul>
+<li>Application manager to handle the requested keyset, show/hide and app launch</li>
+<li>Companion screen manager</li>
+<li>Sync manager wrapping the HbbTV MediaSynchroniser object</li>
+</ul>
+<p>The individual modules are implemented in CommonJS style. This is same way as JavaScript modules
+are handled in Node.js runtime. Modules are intended to be used with webpack, which prepares the 
+code for execution in HbbTV browser environments.</p>
+<p>A version of hbbtv-lib that can be used without specific build tools is on the roadmap.</p>
+<p><img src="https://2immerse.eu/wp-content/uploads/2016/04/2-IMM_150x50.png" align="left"/><em>This project was originally developed as part of the <a href="https://2immerse.eu/">2-IMMERSE</a> project, co-funded by the European Commission’s <a hef="http://ec.europa.eu/programmes/horizon2020/">Horizon 2020</a> Research Programme</em></p>
+<h2>Install</h2><p>Install via npm:</p>
+<pre class="prettyprint source"><code>npm install --save hbbtv-lib</code></pre><h2>Usage</h2><pre class="prettyprint source lang-javascript"><code>var AppMan = require('hbbtv-lib/main/appman');
+var CSMan = require('hbbtv-lib/cs/cs_manager');
+var SyncManager = require('hbbtv-lib/cs/sync_manager');
+var UserAgentParser = require('hbbtv-lib/tools/useragent');</code></pre><p>Use the application manager to set application visible and request keys from terminal.</p>
+<pre class="prettyprint source lang-javascript"><code>AppMan.show();
+AppMan.addKey(AppMan.COLOR);
+AppMan.addKey(AppMan.NAVIGATION);</code></pre><p>Discover launcher applications. The maximum timeout (1sec defined by the spec) 
+can be increased for testing purposes.</p>
+<pre class="prettyprint source lang-javascript"><code>CSMan.once(CSMan.CS_DISCOVERED, on_discovery_finished);
+CSMan.discover_launchers(10000);
+
+function on_discovery_finished (devices) {
+    for (x in devices) {
+        log(devices[x].friendly_name);
+    }
+}</code></pre><p>Launch a webpage with the remote app2app service endpoint added to the URL.</p>
+<pre class="prettyprint source lang-javascript"><code>CSMan.once(CSMan.CS_LAUNCH_RESPONSE, on_launch_response);
+CSMan.launch_html(enum_id, url + &quot;?a2a=&quot; + CSMan.getA2A_remote() + app_endpoint);
+
+function on_launch_response (enum_id, val) {
+    log(&quot;Launch response from enum_id = &quot; + enum_id + &quot;: &quot; + val);
+}</code></pre><p>Enable inter-device synchronisation with video/broadcast</p>
+<pre class="prettyprint source lang-javascript"><code>
+mediaObj = document.getElementById(&quot;vbObject&quot;);
+mediaObj.bindToCurrentChannel();
+
+// wait for presenting state on mediaObj
+
+syncMan = new SyncManager();
+
+syncMan.on(SyncManager.EVT_MS_ERROR, on_ms_error);
+syncMan.once(SyncManager.EVT_CII_ENABLED, on_cii_enabled);
+syncMan.once(SyncManager.EVT_CII_DISABLED, on_cii_disabled);
+
+syncMan.setMasterMedia(mediaObj, &quot;urn:dvb:css:timeline:temi:1:1&quot;);
+syncMan.enableCII();
+
+function on_cii_enabled() {
+    log(&quot;synchronisation with companion can be started.&quot;);
+}</code></pre><h2>Documentation</h2><p>The documentation can be read <a href="http://irt.de">here</a>.</p>
+<h2>Build from source and run tests</h2><p>NOTE: The following requires <a href="https://gruntjs.com/">Grunt-CLI</a> to be installed globally on your machine.</p>
+<p>Build library from source:</p>
+<pre class="prettyprint source"><code>grunt build</code></pre><p>Run unit tests (this will build the libraries before running the unit tests):</p>
+<pre class="prettyprint source"><code>grunt test</code></pre><p>Build the documentation from JsDoc annotations in source code:</p>
+<pre class="prettyprint source"><code>grunt doc</code></pre><h2>License and authors</h2><p>All code and documentation is licensed by the original author and contributors under the Apache License v2.0:</p>
+<ul>
+<li><a href="http://www.irt.de/">Institut für Rundfunktechnik</a></li>
+</ul>
+<p>See <a href="AUTHORS">AUTHORS</a> file for a full list of individuals and organisations that have
+contributed to this code.</p>
+<h2>Contributing</h2><p>If you wish to contribute to this project, please get in touch with the <a href="AUTHORS">authors</a>.</p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-HbbTVUserAgentParser.html">HbbTVUserAgentParser</a></li></ul><h3>Externals</h3><ul><li><a href="external-EventEmitter.html">EventEmitter</a></li></ul><h3>Classes</h3><ul><li><a href="AppMan.html">AppMan</a></li><li><a href="CSMan.html">CSMan</a></li><li><a href="SyncManager.html">SyncManager</a></li></ul><h3>Events</h3><ul><li><a href="CSMan.html#event:EVT_CS_DISCOVERED">EVT_CS_DISCOVERED</a></li><li><a href="CSMan.html#event:EVT_CS_ERROR">EVT_CS_ERROR</a></li><li><a href="CSMan.html#event:EVT_CS_LAUNCH_RESPONSE">EVT_CS_LAUNCH_RESPONSE</a></li><li><a href="SyncManager.html#event:EVT_CII_DISABLED">EVT_CII_DISABLED</a></li><li><a href="SyncManager.html#event:EVT_CII_ENABLED">EVT_CII_ENABLED</a></li><li><a href="SyncManager.html#event:EVT_ERROR">EVT_ERROR</a></li><li><a href="SyncManager.html#event:EVT_MS_ERROR">EVT_MS_ERROR</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Jan 18 2019 10:00:49 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
