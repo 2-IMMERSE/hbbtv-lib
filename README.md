@@ -111,9 +111,9 @@ All code and documentation is licensed by the original author and contributors u
 
 * [Institut für Rundfunktechnik](http://www.irt.de/)
 
-See [AUTHORS](AUTHORS) file for a full list of individuals and organisations that have
+See [AUTHORS](AUTHORS.md) file for a full list of individuals and organisations that have
 contributed to this code.
 
 ## Contributing
 
-If you wish to contribute to this project, please get in touch with the [authors](AUTHORS).
+If you wish to contribute to this project, please get in touch with the [authors](AUTHORS.md).
