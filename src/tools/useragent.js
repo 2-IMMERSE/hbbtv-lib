@@ -73,7 +73,7 @@ module.exports = function (ua) {
         if (!ua) {
             ua = navigator.userAgent;
         }
-        var reg = /.*(HbbTV\/(\d\.\d\.\d)\s+\((.*)\)).*/g;
+        var reg = /.*(HbbTV\/(\d\.\d\.\d)\s+\(([^\)]*)\)).*/g;
         var match = reg.exec(ua);
         str = match[1];
         version = match[2].split('.');
